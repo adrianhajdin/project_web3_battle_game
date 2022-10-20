@@ -1,5 +1,4 @@
 # Build and Deploy an Online Multiplayer Web3 NFT Card Game
-![Home screen](https://i.ibb.co/HKW8dFT/image.png)
 ![Gameplay](https://i.ibb.co/4P2C08x/image.png)
 
 ### Launch your development career with project-based coaching on [JS Mastery Pro](https://www.jsmastery.pro).
