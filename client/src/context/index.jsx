@@ -1,6 +1,3 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable eqeqeq */
-/* eslint-disable prefer-destructuring */
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';

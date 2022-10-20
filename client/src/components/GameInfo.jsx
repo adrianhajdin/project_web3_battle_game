@@ -1,25 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import styles from '../styles';
-import { alertIcon } from '../assets';
 import CustomButton from './CustomButton';
 import { useGlobalContext } from '../context';
-
-const gameRules = [
-  'Card with the same defense and attack point will cancel out each other.',
-  "Attack points from the attacking card will deduct the opposing hero's(player) health points.",
-  'If P1 did not defend(), P1 playerHealth -= P2’s Card attackStrength',
-  'If P1 defends, attackDamage = P2’s card attackStrength - P1’s card defenseStrength',
-  'If defends, player gains 3 Mana',
-  'If attacks, player spends 3 Mana',
-];
+import { alertIcon, gameRules } from '../assets';
+import styles from '../styles';
 
 const GameInfo = () => {
-  const navigate = useNavigate();
-  const [toggleSidebar, setToggleSidebar] = useState(false);
-
   const { contract, gameData, setErrorMessage, setShowAlert } = useGlobalContext();
+  const [toggleSidebar, setToggleSidebar] = useState(false);
+  const navigate = useNavigate();
 
   const handleBattleExit = async () => {
     const battleName = gameData.activeBattle.name;
@@ -29,7 +19,6 @@ const GameInfo = () => {
 
       setShowAlert({ status: true, type: 'success', message: `You're quitting the ${battleName}` });
     } catch (error) {
-      console.log(error);
       setErrorMessage(error);
     }
   };
@@ -55,7 +44,8 @@ const GameInfo = () => {
             <div
               className={`${styles.flexCenter} ${styles.gameInfoSidebarClose}`}
               onClick={() => setToggleSidebar(false)}
-            >X
+            >
+              X
             </div>
           </div>
 
@@ -63,7 +53,9 @@ const GameInfo = () => {
 
           <div className="mt-3">
             {gameRules.map((rule, index) => (
-              <p key={`game-rule-${index}`} className={styles.gameInfoText}><span className="font-bold">{index + 1}</span>. {rule}</p>
+              <p key={`game-rule-${index}`} className={styles.gameInfoText}>
+                <span className="font-bold">{index + 1}</span>. {rule}
+              </p>
             ))}
           </div>
         </div>
