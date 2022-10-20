@@ -1,16 +1,35 @@
 /* eslint-disable prefer-destructuring */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
-import { useParams, useNavigate } from 'react-router-dom';
-
-import styles from '../styles';
-import { Alert, Card, GameInfo, PlayerInfo } from '../components';
-import { useGlobalContext } from '../context';
-import { attack, attackSound, defense, defenseSound, player01 as player01Icon, player02 as player02Icon } from '../assets';
-import { playAudio } from '../utils';
+import styles from "../styles";
+import { ActionButton, Alert, Card, GameInfo, PlayerInfo } from "../components";
+import { useGlobalContext } from "../context";
+import {
+  attack,
+  attackSound,
+  defense,
+  defenseSound,
+  player01 as player01Icon,
+  player02 as player02Icon,
+} from "../assets";
+import { playAudio } from "../utils";
 
 const Battle = () => {
-  const { contract, gameData, battleGround, walletAddress, setErrorMessage, showAlert, setShowAlert, isWaitingForOpponent, setPlayerOneCurrentHealth, setPlayerTwoCurrentHealth, player1Ref, player2Ref } = useGlobalContext();
+  const {
+    contract,
+    gameData,
+    battleGround,
+    walletAddress,
+    setErrorMessage,
+    showAlert,
+    setShowAlert,
+    isWaitingForOpponent,
+    setPlayerOneCurrentHealth,
+    setPlayerTwoCurrentHealth,
+    player1Ref,
+    player2Ref,
+  } = useGlobalContext();
 
   const [player2, setPlayer2] = useState({});
   const [player1, setPlayer1] = useState({});
@@ -24,7 +43,10 @@ const Battle = () => {
         let player01Address = null;
         let player02Address = null;
 
-        if (gameData.activeBattle.players[0].toLowerCase() === walletAddress.toLowerCase()) {
+        if (
+          gameData.activeBattle.players[0].toLowerCase() ===
+          walletAddress.toLowerCase()
+        ) {
           player01Address = gameData.activeBattle.players[0];
           player02Address = gameData.activeBattle.players[1];
         } else {
@@ -49,11 +71,35 @@ const Battle = () => {
         setPlayerOneCurrentHealth(p1H);
         setPlayerTwoCurrentHealth(p2H);
 
-        console.log('P1 ATT:', p1Att, 'P1 DEF:', p1Def, 'P1 H:', p1H, 'P1 M:', p1M);
-        console.log('P2 ATT:', p2Att, 'P2 DEF:', p2Def, 'P2 H:', p2H, 'P2 M:', p2M);
+        console.log(
+          "P1 ATT:",
+          p1Att,
+          "P1 DEF:",
+          p1Def,
+          "P1 H:",
+          p1H,
+          "P1 M:",
+          p1M
+        );
+        console.log(
+          "P2 ATT:",
+          p2Att,
+          "P2 DEF:",
+          p2Def,
+          "P2 H:",
+          p2H,
+          "P2 M:",
+          p2M
+        );
 
-        setPlayer1({ ...player01, att: p1Att, def: p1Def, health: p1H, mana: p1M });
-        setPlayer2({ ...player02, att: 'X', def: 'X', health: p2H, mana: p2M });
+        setPlayer1({
+          ...player01,
+          att: p1Att,
+          def: p1Def,
+          health: p1H,
+          mana: p1M,
+        });
+        setPlayer2({ ...player02, att: "X", def: "X", health: p2H, mana: p2M });
       } catch (error) {
         setErrorMessage(error.message);
       }
@@ -64,7 +110,7 @@ const Battle = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!gameData?.activeBattle) navigate('/');
+      if (!gameData?.activeBattle) navigate("/");
     }, [2000]);
 
     return () => clearTimeout(timer);
@@ -72,20 +118,30 @@ const Battle = () => {
 
   const makeAMove = async (choice) => {
     playAudio(choice === 1 ? attackSound : defenseSound);
+
     try {
       const tx = await contract.attackOrDefendChoice(choice, battleName, {
         gasLimit: 200000,
       });
       await tx.wait();
-      setShowAlert({ status: true, type: 'info', message: `Initiating ${choice === 1 ? 'attack' : 'defense'}` });
+
+      setShowAlert({
+        status: true,
+        type: "info",
+        message: `Initiating ${choice === 1 ? "attack" : "defense"}`,
+      });
     } catch (error) {
       setErrorMessage(error);
     }
   };
 
   return (
-    <div className={`${styles.flexBetween} ${styles.gameContainer} ${battleGround}`}>
-      {showAlert?.status && <Alert type={showAlert.type} message={showAlert.message} />}
+    <div
+      className={`${styles.flexBetween} ${styles.gameContainer} ${battleGround}`}
+    >
+      {showAlert?.status && (
+        <Alert type={showAlert.type} message={showAlert.message} />
+      )}
 
       <PlayerInfo player={player2} playerIcon={player02Icon} mt />
 
@@ -98,16 +154,11 @@ const Battle = () => {
         />
 
         <div className="flex items-center flex-row">
-          <div
-            className={`${styles.gameMoveBox} ${styles.flexCenter} ${styles.glassEffect} mr-2 hover:border-yellow-400`}
-            onClick={() => makeAMove(1)}
-          >
-            <img
-              src={attack}
-              alt="attack"
-              className={styles.gameMoveIcon}
-            />
-          </div>
+          <ActionButton
+            imgUrl={attack}
+            handleClick={() => makeAMove(1)}
+            restStyles="mr-2 hover:border-yellow-400"
+          />
 
           <Card
             card={player1}
@@ -116,16 +167,11 @@ const Battle = () => {
             restStyles="mt-3"
           />
 
-          <div
-            className={`${styles.gameMoveBox} ${styles.flexCenter} ${styles.glassEffect} ml-6 hover:border-red-600`}
-            onClick={() => makeAMove(2)}
-          >
-            <img
-              src={defense}
-              alt="defense"
-              className={styles.gameMoveIcon}
-            />
-          </div>
+          <ActionButton
+            imgUrl={defense}
+            handleClick={() => makeAMove(2)}
+            restStyles="ml-6 hover:border-red-600"
+          />
         </div>
       </div>
 
