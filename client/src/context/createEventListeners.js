@@ -1,7 +1,8 @@
 import { ethers } from 'ethers';
 
 import { ABI } from '../contract';
-import { sparcle } from '../utils/animation.js';
+import { playAudio, sparcle } from '../utils/animation.js';
+import { defenseSound } from '../assets';
 
 const AddNewEvent = (eventFilter, provider, cb) => {
   provider.removeListener(eventFilter);
@@ -78,9 +79,11 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
       if (args.damagedPlayers[i] !== emptyAccount) {
         if (args.damagedPlayers[i] === walletAddress) {
           sparcle(getCoords(player1Ref));
-        } else {
+        } else if (args.damagedPlayers[i] !== walletAddress) {
           sparcle(getCoords(player2Ref));
         }
+      } else {
+        playAudio(defenseSound);
       }
     }
 
@@ -92,12 +95,10 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
   AddNewEvent(BattleEndedEventFilter, provider, ({ args }) => {
     if (walletAddress.toLowerCase() === args.winner.toLowerCase()) {
       setShowAlert({ status: true, type: 'success', message: 'You won!' });
-    } else {
+    } else if (walletAddress.toLowerCase() === args.loser.toLowerCase()) {
       setShowAlert({ status: true, type: 'failure', message: 'You lost!' });
     }
 
-    setTimeout(() => {
-      navigate('/create-battle');
-    }, 2000);
+    navigate('/create-battle');
   });
 };

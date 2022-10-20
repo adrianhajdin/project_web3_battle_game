@@ -123,7 +123,7 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
   // Events
   event NewPlayer(address indexed owner, string name);
   event NewBattle(string battleName, address indexed player1, address indexed player2);
-  event BattleEnded(string battleName, address indexed winner);
+  event BattleEnded(string battleName, address indexed winner, address indexed loser);
   event BattleMove(string indexed battleName, bool indexed isFirstMove);
   event NewGameToken(address indexed owner, uint256 id, uint256 attackStrength, uint256 defenseStrength);
   event RoundEnded(address[2] damagedPlayers);
@@ -458,7 +458,10 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
     players[p2].playerHealth = 25;
     players[p2].playerMana = 10;
 
-    emit BattleEnded(_battle.name, battleEnder); // Emits BattleEnded event
+    address _battleLoser = battleEnder == _battle.players[0] ? _battle.players[1] : _battle.players[0];
+
+    emit BattleEnded(_battle.name, battleEnder, _battleLoser); // Emits BattleEnded event
+
     return _battle;
   }
 

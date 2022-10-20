@@ -17,7 +17,7 @@ const GameInfo = () => {
     try {
       await contract.quitBattle(battleName);
 
-      setShowAlert({ status: true, type: 'success', message: `You're quitting the ${battleName}` });
+      setShowAlert({ status: true, type: 'info', message: `You're quitting the ${battleName}` });
     } catch (error) {
       setErrorMessage(error);
     }
