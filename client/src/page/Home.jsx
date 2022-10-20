@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { CustomButton, CustomInput, PageHOC } from "../components";
-import { useGlobalContext } from "../context";
+import { CustomButton, CustomInput, PageHOC } from '../components';
+import { useGlobalContext } from '../context';
 
 const Home = () => {
-  const {
-    contract,
-    walletAddress,
-    gameData,
-    playerCreated,
-    setPlayerCreated,
-    setShowAlert,
-    setErrorMessage,
-  } = useGlobalContext();
-  const [playerName, setPlayerName] = useState("");
+  const { contract, walletAddress, gameData, setShowAlert, setErrorMessage } = useGlobalContext();
+  const [playerName, setPlayerName] = useState('');
   const navigate = useNavigate();
 
   const handleClick = async () => {
@@ -22,23 +14,15 @@ const Home = () => {
       const playerExists = await contract.isPlayer(walletAddress);
 
       if (!playerExists) {
-        const _register = await contract.registerPlayer(
-          playerName,
-          playerName,
-          {
-            gasLimit: 500000,
-          }
-        );
-        await _register.wait();
+        await contract.registerPlayer(playerName, playerName, { gasLimit: 500000 });
+
         setShowAlert({
           status: true,
-          type: "info",
+          type: 'info',
           message: `${playerName} is being summoned!`,
         });
 
-        setTimeout(() => navigate("/create-battle"), 8000);
-      } else {
-        setPlayerCreated(true);
+        setTimeout(() => navigate('/create-battle'), 8000);
       }
     } catch (error) {
       setErrorMessage(error);
@@ -49,13 +33,12 @@ const Home = () => {
     const createPlayerToken = async () => {
       const playerExists = await contract.isPlayer(walletAddress);
       const playerTokenExists = await contract.isPlayerToken(walletAddress);
-      if ((playerCreated || playerExists) && playerTokenExists) {
-        navigate("/create-battle");
-      }
+
+      if (playerExists && playerTokenExists) navigate('/create-battle');
     };
 
     if (contract) createPlayerToken();
-  }, [contract, playerCreated]);
+  }, [contract]);
 
   useEffect(() => {
     if (gameData.activeBattle) {
@@ -64,24 +47,22 @@ const Home = () => {
   }, [gameData]);
 
   return (
-    <>
-      {walletAddress && (
-        <div className="flex flex-col">
-          <CustomInput
-            label="Name"
-            placeHolder="Enter your player name"
-            value={playerName}
-            handleValueChange={setPlayerName}
-          />
+    walletAddress && (
+      <div className="flex flex-col">
+        <CustomInput
+          label="Name"
+          placeHolder="Enter your player name"
+          value={playerName}
+          handleValueChange={setPlayerName}
+        />
 
-          <CustomButton
-            title="Register"
-            handleClick={handleClick}
-            restStyles="mt-6"
-          />
-        </div>
-      )}
-    </>
+        <CustomButton
+          title="Register"
+          handleClick={handleClick}
+          restStyles="mt-6"
+        />
+      </div>
+    )
   );
 };
 
@@ -93,5 +74,5 @@ export default PageHOC(
   <>
     Connect your wallet to start playing <br /> the ultimate Web3 Battle Card
     Game
-  </>
+  </>,
 );

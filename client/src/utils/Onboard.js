@@ -64,6 +64,7 @@ export const GetParams = async () => {
     response.step = 0;
     return response;
   }
+
   const currentAccount = await requestAccount();
   if (currentAccount === 0x0) {
     response.step = 1;

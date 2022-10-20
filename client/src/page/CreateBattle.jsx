@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styles from '../styles';
@@ -6,7 +6,8 @@ import { useGlobalContext } from '../context';
 import { CustomButton, CustomInput, GameLoad, PageHOC } from '../components';
 
 const CreateBattle = () => {
-  const { contract, gameData, battleName, setBattleName, setErrorMessage, waitBattle, setWaitBattle } = useGlobalContext();
+  const { contract, gameData, battleName, setBattleName, setErrorMessage } = useGlobalContext();
+  const [waitBattle, setWaitBattle] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {

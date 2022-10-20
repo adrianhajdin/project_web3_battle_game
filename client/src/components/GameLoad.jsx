@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import CustomButton from './CustomButton';
 import { useGlobalContext } from '../context';
@@ -15,7 +15,7 @@ const GameLoad = () => {
       <div className={styles.gameLoadBtnBox}>
         <CustomButton
           title="Choose Battleground"
-          handleClick={() => navigate("/battleground")}
+          handleClick={() => navigate('/battleground')}
           restStyles="mt-6"
         />
       </div>
@@ -49,7 +49,7 @@ const GameLoad = () => {
 
           <CustomButton
             title="Join other battles"
-            handleClick={() => navigate("/join-battle")}
+            handleClick={() => navigate('/join-battle')}
           />
         </div>
       </div>
