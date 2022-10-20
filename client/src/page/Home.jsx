@@ -64,7 +64,7 @@ const Home = () => {
   }, [gameData]);
 
   return (
-    <div>
+    <>
       {walletAddress && (
         <div className="flex flex-col">
           <CustomInput
@@ -81,7 +81,7 @@ const Home = () => {
           />
         </div>
       )}
-    </div>
+    </>
   );
 };
 
