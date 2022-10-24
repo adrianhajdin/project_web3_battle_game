@@ -21,10 +21,7 @@ const Battle = () => {
         let player01Address = null;
         let player02Address = null;
 
-        if (
-          gameData.activeBattle.players[0].toLowerCase()
-          === walletAddress.toLowerCase()
-        ) {
+        if (gameData.activeBattle.players[0].toLowerCase() === walletAddress.toLowerCase()) {
           player01Address = gameData.activeBattle.players[0];
           player02Address = gameData.activeBattle.players[1];
         } else {

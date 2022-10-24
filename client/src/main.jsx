@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { OnboardModal, Battleground, CreateBattle, Battle, Home, JoinBattle } from './page';
+import { Battleground, CreateBattle, Battle, Home, JoinBattle } from './page';
+import { OnboardModal } from './components';
 import { GlobalContextProvider } from './context';
 import './index.css';
 
