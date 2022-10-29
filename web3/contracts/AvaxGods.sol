@@ -14,7 +14,7 @@ import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
 /// @author Gabriel Cardona
 /// @author Raj Ranjan
 
-contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
+contract AvaxGods is ERC1155, Ownable, ERC1155Supply {
   string public baseURI; // baseURI where token metadata is stored
   uint256 public totalSupply; // Total number of tokens minted
   uint256 public constant DEVIL = 0;
